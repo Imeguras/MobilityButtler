@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.ipleiria.anaivojoao.mobilitybuttler.R
 import com.ipleiria.anaivojoao.mobilitybuttler.databinding.FragmentHomeBinding
+import java.io.IOException
 
 class HomeFragment : Fragment() {
 
@@ -32,6 +36,12 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+        val gifImageView: ImageView = root.findViewById(R.id.gifImageView)
+
+        // Load the GIF
+        Glide.with(this).load("file:///android_asset/butler_speaking.gif").into(gifImageView)
+
         return root
     }
 
