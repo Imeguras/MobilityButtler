@@ -3,11 +3,9 @@ package com.ipleiria.anaivojoao.mobilitybuttler.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ipleiria.anaivojoao.mobilitybuttler.data.VoiceRecognitionRepository
+import com.ipleiria.anaivojoao.mobilitybuttler.ui.base.VoiceManagedViewModel
 
-class HomeViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
-}
+class HomeViewModel(
+    voiceRecognitionRepository: VoiceRecognitionRepository
+): VoiceManagedViewModel(voiceRecognitionRepository)
