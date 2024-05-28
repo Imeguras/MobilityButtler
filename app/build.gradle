@@ -41,11 +41,26 @@ android {
         includeInApk true
         includeInBundle true
     }
+    sourceSets {
+        main {
+            assets {
+                srcDirs 'src\\main\\assets'
+            }
+        }
+    }
+    viewBinding {
+        enabled = true
+    }
     buildToolsVersion '33.0.2'
     ndkVersion '25.1.8937393'
 }
 
 dependencies {
+
+    // Gif Dependencies
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.25'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'

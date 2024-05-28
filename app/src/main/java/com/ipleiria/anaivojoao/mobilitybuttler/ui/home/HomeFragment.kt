@@ -8,9 +8,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.ipleiria.anaivojoao.mobilitybuttler.R
 import com.ipleiria.anaivojoao.mobilitybuttler.data.entity.VoiceCommandEntity
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.ipleiria.anaivojoao.mobilitybuttler.R
 import com.ipleiria.anaivojoao.mobilitybuttler.databinding.FragmentHomeBinding
 import com.ipleiria.anaivojoao.mobilitybuttler.ui.base.VoiceManagedFragment
 import com.ipleiria.anaivojoao.mobilitybuttler.ui.utils.checkAndRequestPermissions
+import java.io.IOException
 
 import com.ipleiria.anaivojoao.mobilitybuttler.ui.utils.viewBinding
 
@@ -50,6 +58,30 @@ class HomeFragment :
             else -> super.commandProcessing(command)
         }
     }
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
+        val homeViewModel =
+                ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+
+        val textView: TextView = binding.textHome
+        homeViewModel.text.observe(viewLifecycleOwner) {
+            textView.text = it
+        }
+
+        val gifImageView: ImageView = root.findViewById(R.id.gifImageView)
+
+        // Load the GIF
+        Glide.with(this).load("file:///android_asset/butler_speaking.gif").into(gifImageView)
+
+        return root
+    }
+
 
     /*override fun navigateNext() {
         navigateTo(HomeScreenFragmentDirections.actionHomeScreenFragmentToContentScreenFragment())
