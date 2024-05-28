@@ -39,6 +39,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // Start TextToSpeech TTS
+        val tts = TextToSpeech(this);
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
