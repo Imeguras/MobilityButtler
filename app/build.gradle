@@ -7,6 +7,10 @@ android {
     namespace 'com.ipleiria.anaivojoao.mobilitybuttler'
     compileSdk 33
 
+    packagingOptions{
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/DEPENDENCIES'
+    }
     defaultConfig {
         applicationId "com.ipleiria.anaivojoao.mobilitybuttler"
         minSdk 24
@@ -31,7 +35,12 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
+        dataBinding true
         viewBinding true
+    }
+    dependenciesInfo {
+        includeInApk true
+        includeInBundle true
     }
     sourceSets {
         main {
@@ -43,6 +52,8 @@ android {
     viewBinding {
         enabled = true
     }
+    buildToolsVersion '33.0.2'
+    ndkVersion '25.1.8937393'
 }
 
 dependencies {
@@ -60,8 +71,17 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'com.google.cloud:google-cloud-speech:1.29.1'
+    implementation 'com.google.auth:google-auth-library-oauth2-http:0.26.0'
+    implementation 'io.grpc:grpc-okhttp:1.38.1'
+    implementation 'io.grpc:grpc-stub:1.39.0'
+    implementation 'io.insert-koin:koin-android:3.4.0'
+    implementation 'io.insert-koin:koin-android-ext:3.0.1'
+    implementation 'io.insert-koin:koin-androidx-compose:3.4.4'
+    implementation platform('org.jetbrains.kotlin:kotlin-bom')
 
 }
