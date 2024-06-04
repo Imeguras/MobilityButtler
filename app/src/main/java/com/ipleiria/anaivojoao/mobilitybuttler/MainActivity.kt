@@ -12,7 +12,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.ipleiria.anaivojoao.mobilitybuttler.data.dataModule
 import com.ipleiria.anaivojoao.mobilitybuttler.databinding.ActivityMainBinding
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,19 +28,27 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        startKoin {
+            androidLogger(Level.ERROR)
+            androidContext(this@MainActivity)
+            modules(
+                dataModule,
+                uiModule
+            )
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.appBarMain.toolbar)
 
         binding.appBarMain.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
+
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
@@ -45,21 +58,19 @@ class MainActivity : AppCompatActivity() {
 
         butlerGif = ButlerGif(this)
         butlerGif.butlerStopSpeakGif()
+
         tts = TextToSpeech(this, butlerGif)
+
         speakOnStartUp(this)
 
     }
 
     private fun speakOnStartUp(context: Context){
-//        butlerGif.butlerSpeakGif()
         tts.handleIncomingString(context, "Dear Sir, How are you?")
-//        butlerGif.butlerStopSpeakGif()
     }
 
     private fun speak(context: Context, tts: TextToSpeech, phrase: String) {
-//        butlerGif.butlerSpeakGif()
         tts.handleIncomingString(context,phrase)
-//        butlerGif.butlerStopSpeakGif()
     }
 
 
