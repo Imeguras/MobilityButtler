@@ -1,22 +1,25 @@
 package com.ipleiria.anaivojoao.mobilitybuttler
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.ipleiria.anaivojoao.mobilitybuttler.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var tts: TextToSpeech
+    private lateinit var butlerGif: ButlerGif
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +43,25 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        // Start TextToSpeech TTS
-        val tts = TextToSpeech(this);
+        butlerGif = ButlerGif(this)
+        butlerGif.butlerStopSpeakGif()
+        tts = TextToSpeech(this, butlerGif)
+        speakOnStartUp(this)
+
     }
+
+    private fun speakOnStartUp(context: Context){
+//        butlerGif.butlerSpeakGif()
+        tts.handleIncomingString(context, "Dear Sir, How are you?")
+//        butlerGif.butlerStopSpeakGif()
+    }
+
+    private fun speak(context: Context, tts: TextToSpeech, phrase: String) {
+//        butlerGif.butlerSpeakGif()
+        tts.handleIncomingString(context,phrase)
+//        butlerGif.butlerStopSpeakGif()
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

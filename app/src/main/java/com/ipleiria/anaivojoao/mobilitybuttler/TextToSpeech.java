@@ -1,7 +1,10 @@
 package com.ipleiria.anaivojoao.mobilitybuttler;
 
 import android.content.Context;
+import android.speech.tts.UtteranceProgressListener;
 import android.speech.tts.Voice;
+
+import com.ipleiria.anaivojoao.mobilitybuttler.ui.home.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +14,10 @@ import java.util.Set;
 public class TextToSpeech {
     private android.speech.tts.TextToSpeech tts;
     private boolean isTtsInitialized = false;
+    private ButlerGif butlerGif;
 
-    public TextToSpeech(Context context) {
-        handleIncomingString(context,"Dear Sir, How are you?");
+    public TextToSpeech(Context context, ButlerGif butlerGif) {
+        this.butlerGif = butlerGif;
     }
 
     public void handleIncomingString(Context context, String text) {
@@ -42,8 +46,27 @@ public class TextToSpeech {
 
 
     private void convertTextToSpeech(String text) {
-        if (tts != null) {
-            tts.speak(text, android.speech.tts.TextToSpeech.QUEUE_ADD, null, "UniqueID");
+        if (tts == null) {
+            return;
         }
+
+        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String utteranceId) {
+                butlerGif.butlerSpeakGif();
+            }
+
+            @Override
+            public void onDone(String utteranceId) {
+                butlerGif.butlerStopSpeakGif();
+            }
+
+            @Override
+            public void onError(String utteranceId) {
+                // Handle error if needed
+            }
+        });
+
+        tts.speak(text, android.speech.tts.TextToSpeech.QUEUE_ADD, null, "UniqueID");
     }
 }
