@@ -63,14 +63,18 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
         if(params != null && SayTriggers.TEMPERATURE.isIn(params)){
 			println("Dispatching Temperature")
 
-            //var call = ApiClient.apiService.getLatestTemperature();
+            var call = ApiClient.apiService.getLatestTemperature();
 			/////Dispatch the get request and return a OpenM2Mresponse
-			/*call.enqueue(object : Callback<M2MResponse> {
+			call.enqueue(object : Callback<M2MResponse> {
 				override fun onResponse(call: Call<M2MResponse>, response: Response<M2MResponse>) {
                     println("Response!!")
                     val m2mResponse = response.body()
                     //genericLogicResourceDecoder()
 					//requireContext().toast("Temperature: ${m2mResponse?.cin?.containerValue.toString()}")
+                    var ret: String = ContentInfoEnum.genericLogicResourceDecoder(m2mResponse?.cin)
+                    println(ret)
+                    //find a way to access this
+                    MainActivity.TTS.handleIncomingString(context, ret);
 
                 }
 
@@ -79,18 +83,9 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
                 }
 
 
-            })*/
+            })
 
-            for (i in 1..3 ){
-                println("SE TAS A VER ISTO E PORQUE O HARDCODE DO JOÃO TA PRESENTE E TEM DE SER APAGADO ")
-            }
-            var t:M2MResponse = M2MResponse(Cin("24.24\n", "text/plain:0"));
 
-            var ret: String = ContentInfoEnum.genericLogicResourceDecoder(t.cin)
-            println(ret)
-            //find a way to access this
-            MainActivity.TTS.handleIncomingString(this.context, ret);
-            //tts.handleIncomingString(context, ret)
 
 
         }
