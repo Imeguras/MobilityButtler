@@ -16,9 +16,11 @@ enum class ContentInfoEnum(val cnf: String){
 	PLAINTEXT("text/plain"),
 	EMPTY("");
 	companion object {
-		fun logicResourceDecoder(cin: Cin?): String {
+		fun genericLogicResourceDecoder(cin: Cin?): String {
 			return when(cin?.ContentInfo){
-				JSON -> cin.containerValue
+				ContentInfoEnum.JSON.cnf -> cin.containerValue?:""
+				ContentInfoEnum.PLAINTEXT.cnf -> cin.containerValue?.trim()?:""
+				else -> cin?.containerValue?.trim()?:""
 			}
 
 		}
@@ -36,7 +38,7 @@ fun ContentInfoEnum.isIn(text: String): Boolean =
 // Temperature {"m2m:cin": {"con": " 24.24\n", "cnf": "text/plain:0", "ri": "cin4633681802011007144", "pi": "cnt652548847908870411", "rn": "cin_478ndNX8vB", "ct": "20240604T173023,437997", "lt": "20240604T173023,437997", "ty": 4, "cs": 7, "st": 2, "et": "20290520T135918,198523"}}%
 data class Cin(
 	@SerializedName("con") val containerValue: String?=null,
-	@SerializedName("cnf") val ContentInfo: ContentInfoEnum?= ContentInfoEnum.EMPTY
+	@SerializedName("cnf") val ContentInfo: String?= ContentInfoEnum.EMPTY.cnf
 )
 data class M2MResponse(
 	@SerializedName("m2m:cin") val cin: Cin

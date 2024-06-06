@@ -6,6 +6,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.ipleiria.anaivojoao.mobilitybuttler.ApiClient
+import com.ipleiria.anaivojoao.mobilitybuttler.TextToSpeech
+import com.ipleiria.anaivojoao.mobilitybuttler.api.Cin
+import com.ipleiria.anaivojoao.mobilitybuttler.api.ContentInfoEnum
 import com.ipleiria.anaivojoao.mobilitybuttler.api.M2MResponse
 import com.ipleiria.anaivojoao.mobilitybuttler.data.entity.SayTriggers
 import kotlinx.coroutines.launch
@@ -58,13 +61,15 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
         println("TRANSCRIBE");
         if(params != null && SayTriggers.TEMPERATURE.isIn(params)){
 			println("Dispatching Temperature")
-            var call = ApiClient.apiService.getLatestTemperature();
-			//Dispatch the get request and return a OpenM2Mresponse
-			call.enqueue(object : Callback<M2MResponse> {
+
+            //var call = ApiClient.apiService.getLatestTemperature();
+			/////Dispatch the get request and return a OpenM2Mresponse
+			/*call.enqueue(object : Callback<M2MResponse> {
 				override fun onResponse(call: Call<M2MResponse>, response: Response<M2MResponse>) {
                     println("Response!!")
                     val m2mResponse = response.body()
-                    requireContext().toast("Temperature: ${m2mResponse?.cin?.containerValue.toString()}")
+                    //genericLogicResourceDecoder()
+					//requireContext().toast("Temperature: ${m2mResponse?.cin?.containerValue.toString()}")
 
                 }
 
@@ -72,7 +77,22 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
                     requireContext().toast("Err: "+t.message.toString())
                 }
 
-            })
+
+            })*/
+
+            for (i in 1..3 ){
+                println("SE TAS A VER ISTO E PORQUE O HARDCODE DO JOÃO TA PRESENTE E TEM DE SER APAGADO ")
+            }
+            var t:M2MResponse = M2MResponse(Cin("24.24\n", "text/plain:0"));
+
+            var ret: String = ContentInfoEnum.genericLogicResourceDecoder(t.cin)
+            println(ret)
+            //find a way to access this
+            var tts : TextToSpeech= TextToSpeech(this.context)
+            tts.handleIncomingString(this.context, ret)
+            //tts.handleIncomingString(context, ret)
+
+
         }
     }
     open fun exit() {
