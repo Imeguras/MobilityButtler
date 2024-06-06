@@ -22,6 +22,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    companion object {
+        lateinit var TTS: TextToSpeech
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         // Start TextToSpeech TTS
-        val tts = TextToSpeech(this);
+        TTS = TextToSpeech(this);
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

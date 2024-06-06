@@ -13,7 +13,7 @@ public class TextToSpeech {
     private boolean isTtsInitialized = false;
 
     public TextToSpeech(Context context) {
-        //handleIncomingString(context,"Dear Sir, How are you?");
+        handleIncomingString(context,"Dear Sir, How are you?");
     }
 
     public void handleIncomingString(Context context, String text) {

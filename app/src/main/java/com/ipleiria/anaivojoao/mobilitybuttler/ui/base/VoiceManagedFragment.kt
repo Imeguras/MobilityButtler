@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.ipleiria.anaivojoao.mobilitybuttler.ApiClient
+import com.ipleiria.anaivojoao.mobilitybuttler.MainActivity
 import com.ipleiria.anaivojoao.mobilitybuttler.TextToSpeech
 import com.ipleiria.anaivojoao.mobilitybuttler.api.Cin
 import com.ipleiria.anaivojoao.mobilitybuttler.api.ContentInfoEnum
@@ -88,8 +89,7 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
             var ret: String = ContentInfoEnum.genericLogicResourceDecoder(t.cin)
             println(ret)
             //find a way to access this
-            var tts : TextToSpeech= TextToSpeech(this.context)
-            tts.handleIncomingString(this.context, ret)
+            MainActivity.TTS.handleIncomingString(this.context, ret);
             //tts.handleIncomingString(context, ret)
 
 
