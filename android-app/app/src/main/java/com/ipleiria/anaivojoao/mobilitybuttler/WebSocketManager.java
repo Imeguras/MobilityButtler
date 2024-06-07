@@ -1,5 +1,6 @@
 package com.ipleiria.anaivojoao.mobilitybuttler;
 
+import android.content.Context;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -18,15 +19,20 @@ public class WebSocketManager {
     private static final String TAG = "WebSocketManager";
     private static final String SERVER_URL = "ws://10.20.140.120:8765";
     private final OkHttpClient client;
+
+    protected Context context;
     private WebSocket webSocket;
 
-    public WebSocketManager() {
+
+    public WebSocketManager(Context context)
+    {
+        this.context = context;
         client = new OkHttpClient();
     }
 
     public void start() {
         Request request = new Request.Builder().url(SERVER_URL).build();
-        webSocket = client.newWebSocket(request, new EchoWebSocketListener());
+        webSocket = client.newWebSocket(request, new EchoWebSocketListener(this.context));
         client.dispatcher().executorService().shutdown();
     }
 
@@ -38,6 +44,14 @@ public class WebSocketManager {
 
     private static final class EchoWebSocketListener extends WebSocketListener {
         private static final int NORMAL_CLOSURE_STATUS = 1000;
+        protected Context context;
+
+        private boolean saidMessage;
+
+        public EchoWebSocketListener(Context context) {
+            this.context = context.getApplicationContext();
+            this.saidMessage = false;
+        }
 
         @Override
         public void onOpen(@NonNull WebSocket webSocket, @NonNull Response response) {
@@ -46,24 +60,30 @@ public class WebSocketManager {
 
         @Override
         public void onMessage(@NonNull WebSocket webSocket, @NonNull String jsonString) {
-            Log.d(TAG, "Receiving : " + jsonString);
-            try {
-                JSONObject jsonObject = new JSONObject(jsonString);
-                JSONObject sgn = jsonObject.getJSONObject("m2m:sgn");
-                JSONObject nev = sgn.getJSONObject("nev");
-                JSONObject rep = nev.getJSONObject("rep");
-                JSONObject cin = rep.getJSONObject("m2m:cin");
-                String con = cin.getString("con");
+            if(!this.saidMessage) {
+                Log.d(TAG, "Receiving : " + jsonString);
+                try {
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    JSONObject sgn = jsonObject.getJSONObject("m2m:sgn");
+                    JSONObject nev = sgn.getJSONObject("nev");
+                    JSONObject rep = nev.getJSONObject("rep");
+                    JSONObject cin = rep.getJSONObject("m2m:cin");
+                    String con = cin.getString("con");
 
-                // The value of "con" is a JSON string itself, so parse it again
-                JSONObject conObject = new JSONObject(con);
-                String message = conObject.getString("message");
+                    // The value of "con" is a JSON string itself, so parse it again
+                    JSONObject conObject = new JSONObject(con);
+                    String message = conObject.getString("message");
 
-                // Log or display the message
-                Log.d("Message: ", message);
-                // Or use it wherever you need
-            } catch (JSONException e) {
-                e.printStackTrace();
+                    // Say message
+                    Log.d("Message: ", message);
+                    MainActivity.TTS.handleIncomingString(this.context, message);
+
+                    saidMessage = true;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                this.saidMessage = false;
             }
         }
 

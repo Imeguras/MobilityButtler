@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         TTS = TextToSpeech(this,butlerGif);
         speakOnStartUp(this)
 
-        webSocketManager = WebSocketManager()
+        webSocketManager = WebSocketManager(this)
         webSocketManager!!.start()
     }
 

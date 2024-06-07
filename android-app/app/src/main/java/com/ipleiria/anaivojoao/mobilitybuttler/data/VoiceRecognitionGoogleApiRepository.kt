@@ -38,11 +38,11 @@ class VoiceRecognitionGoogleApiRepository(
     override val commandsFlow: Flow<VoiceCommandEntity> = callbackFlow {
         val callback = object : ResponseObserver<StreamingRecognizeResponse> {
             override fun onStart(controller: StreamController?) {
-                Log.d(TAG, "ResponseObserver.onStart")
+//                Log.d(TAG, "ResponseObserver.onStart")
             }
 
             override fun onResponse(response: StreamingRecognizeResponse?) {
-                Log.d(TAG, "ResponseObserver.onResponse($response)")
+//                Log.d(TAG, "ResponseObserver.onResponse($response)")
                 response?.let {
                     var text: String? = null
                     var isFinal = false
