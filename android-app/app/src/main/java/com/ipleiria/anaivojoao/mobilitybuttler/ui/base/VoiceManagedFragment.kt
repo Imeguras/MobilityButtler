@@ -1,6 +1,7 @@
 package com.ipleiria.anaivojoao.mobilitybuttler.ui.base
 import android.os.Bundle
 import android.view.View
+import androidx.compose.ui.text.toLowerCase
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,7 @@ import com.ipleiria.anaivojoao.mobilitybuttler.ui.utils.toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Locale
 
 
 abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
@@ -85,6 +87,36 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
 
 
 
+
+        }else if(params != null && SayTriggers.MAIL.isIn(params)){
+            println("Dispatching Mail")
+
+            var call = ApiClient.apiService.checkMail();
+
+            call.enqueue(object : Callback<M2MResponse> {
+                override fun onResponse(call: Call<M2MResponse>, response: Response<M2MResponse>) {
+                    println("Response!!")
+                    val m2mResponse = response.body()
+                    //genericLogicResourceDecoder()
+                    //requireContext().toast("Temperature: ${m2mResponse?.cin?.containerValue.toString()}")
+                    var ret: String = ContentInfoEnum.genericLogicResourceDecoder(m2mResponse?.cin)
+                    ret = when (ret.trim().lowercase()){
+                        "true" -> "You have new mail"
+                        "false" -> "No mails in the letterbox"
+                        else -> "The Mailbox seems unresponsive"
+                    }
+
+                    //find a way to access this
+                    MainActivity.TTS.handleIncomingString(context, ret);
+
+                }
+
+                override fun onFailure(call: Call<M2MResponse>, t: Throwable) {
+                    requireContext().toast("Err: "+t.message.toString())
+                }
+
+
+            })
 
         }
     }
