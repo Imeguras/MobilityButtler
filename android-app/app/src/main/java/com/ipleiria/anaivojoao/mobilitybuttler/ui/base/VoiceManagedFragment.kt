@@ -68,15 +68,15 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
 
             val call = ApiClient.apiService.getLatestTemperature();
 
-			// Dispatch the get request and return a OpenM2MResponse
+			// Dispatch the get request for temperature and return a OpenM2MResponse
 			call.enqueue(object : Callback<M2MResponse> {
 				override fun onResponse(call: Call<M2MResponse>, response: Response<M2MResponse>) {
-                    println("Response!!")
+                    println("Temperature Response")
 
                     val m2mResponse = response.body()
                     val ret: String = ContentInfoEnum.genericLogicResourceDecoder(m2mResponse?.cin)
                 
-                    //Respond with the temperature
+                    // Respond with the temperature
                     MainActivity.TTS.handleIncomingString(context, ret);
                 }
 
@@ -84,29 +84,25 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
                     requireContext().toast("Err: "+t.message.toString())
                 }
             })
-
-
-
-
         }else if(params != null && SayTriggers.MAIL.isIn(params)){
             println("Dispatching Mail")
 
-            var call = ApiClient.apiService.checkMail();
+            val call = ApiClient.apiService.checkMail();
 
+            // Dispatch the get request for mailbox and return a OpenM2MResponse
             call.enqueue(object : Callback<M2MResponse> {
                 override fun onResponse(call: Call<M2MResponse>, response: Response<M2MResponse>) {
-                    println("Response!!")
+                    println("Mailbox Response")
+
                     val m2mResponse = response.body()
-                    //genericLogicResourceDecoder()
-                    //requireContext().toast("Temperature: ${m2mResponse?.cin?.containerValue.toString()}")
                     var ret: String = ContentInfoEnum.genericLogicResourceDecoder(m2mResponse?.cin)
                     ret = when (ret.trim().lowercase()){
-                        "true" -> "You have new mail"
-                        "false" -> "No mails in the letterbox"
+                        "true" -> "You have new mail in the mailbox"
+                        "false" -> "No mails in the mailbox"
                         else -> "The Mailbox seems unresponsive"
                     }
 
-                    //find a way to access this
+                    // Respond with the message about mailbox
                     MainActivity.TTS.handleIncomingString(context, ret);
 
                 }
@@ -114,10 +110,13 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
                 override fun onFailure(call: Call<M2MResponse>, t: Throwable) {
                     requireContext().toast("Err: "+t.message.toString())
                 }
-
-
             })
-
+        } else if(params != null && SayTriggers.KITCHEN.isIn(params)) {
+            MainActivity.lastSaidWord = "kitchen"
+            MainActivity.updateButlerPresence()
+        } else if(params != null && SayTriggers.BEDROOM.isIn(params)) {
+            MainActivity.lastSaidWord = "bedroom"
+            MainActivity.updateButlerPresence()
         }
     }
     open fun exit() {

@@ -14,23 +14,25 @@ import java.util.Set;
 public class TextToSpeech {
     private android.speech.tts.TextToSpeech tts;
     private boolean isTtsInitialized = false;
-    private ButlerGif butlerGif;
+//    private ButlerGif butlerGif;
 
     public TextToSpeech(Context context, ButlerGif butlerGif) {
-        this.butlerGif = butlerGif;
+//        this.butlerGif = butlerGif;
     }
 
     public void handleIncomingString(Context context, String text) {
-        if (isTtsInitialized) {
-            convertTextToSpeech(text);
-        } else {
-            tts = new android.speech.tts.TextToSpeech(context, status -> {
-                if (status == android.speech.tts.TextToSpeech.SUCCESS) {
-                    setLanguageAndVoice();
-                    isTtsInitialized = true;
-                    convertTextToSpeech(text);
-                }
-            });
+        if(MainActivity.ButlerGif.getPresent()) {
+            if (isTtsInitialized) {
+                convertTextToSpeech(text);
+            } else {
+                tts = new android.speech.tts.TextToSpeech(context, status -> {
+                    if (status == android.speech.tts.TextToSpeech.SUCCESS) {
+                        setLanguageAndVoice();
+                        isTtsInitialized = true;
+                        convertTextToSpeech(text);
+                    }
+                });
+            }
         }
     }
 
@@ -54,12 +56,12 @@ public class TextToSpeech {
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String utteranceId) {
-                butlerGif.butlerSpeakGif();
+                MainActivity.ButlerGif.butlerSpeakGif();
             }
 
             @Override
             public void onDone(String utteranceId) {
-                butlerGif.butlerStopSpeakGif();
+                MainActivity.ButlerGif.butlerStopSpeakGif();
             }
 
             @Override

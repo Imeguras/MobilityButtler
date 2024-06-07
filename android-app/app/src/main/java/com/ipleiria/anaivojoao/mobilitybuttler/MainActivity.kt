@@ -2,6 +2,7 @@ package com.ipleiria.anaivojoao.mobilitybuttler
 
 import android.content.Context
 import android.os.Bundle
+import android.text.style.UpdateAppearance
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -25,11 +26,32 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     companion object {
         lateinit var TTS: TextToSpeech
-    }
-    private lateinit var butlerGif: ButlerGif
-    private var webSocketManager: WebSocketManager? = null
+        lateinit var ButlerGif: ButlerGif
+        var location: String? = "kitchen"
+        var lastSaidWord: String? = "kitchen"
 
-    private var location: String? = "kitchen"
+
+        fun updateButlerPresence(){
+            if (location == lastSaidWord){
+                // Appear in the UI
+                ButlerGif.butlerStopSpeakGif()
+
+                // Allow to speak
+
+
+            }
+            else
+            {
+                // Disappear from the UI
+                ButlerGif.butlerDisappear()
+
+                // Do not allow to speak
+
+            }
+        }
+    }
+
+    private var webSocketManager: WebSocketManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,13 +68,15 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.toolbar)
 
         binding.appBarMain.kitchen.setOnClickListener { view ->
-            this.location = "kitchen"
+            location = "kitchen"
+            updateButlerPresence()
             Snackbar.make(view, "Set to kitchen", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
 
         binding.appBarMain.bedroom.setOnClickListener { view ->
-            this.location = "bedroom"
+            location = "bedroom"
+            updateButlerPresence()
             Snackbar.make(view, "Set to bedroom", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
@@ -68,10 +92,11 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        butlerGif = ButlerGif(this)
-        butlerGif.butlerStopSpeakGif()
+        ButlerGif = ButlerGif(this)
+        ButlerGif.butlerStopSpeakGif()
+
         // Start TextToSpeech TTS
-        TTS = TextToSpeech(this,butlerGif);
+        TTS = TextToSpeech(this,ButlerGif);
         speakOnStartUp(this)
 
         webSocketManager = WebSocketManager(this)
@@ -81,11 +106,6 @@ class MainActivity : AppCompatActivity() {
     private fun speakOnStartUp(context: Context){
         TTS.handleIncomingString(context, "Dear Sir, How are you?")
     }
-
-    private fun speak(context: Context, tts: TextToSpeech, phrase: String) {
-        tts.handleIncomingString(context,phrase)
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
