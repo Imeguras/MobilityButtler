@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun speakOnStartUp(context: Context){
-        tts.handleIncomingString(context, "Dear Sir, How are you?")
+        TTS.handleIncomingString(context, "Dear Sir, How are you?")
     }
 
     private fun speak(context: Context, tts: TextToSpeech, phrase: String) {
