@@ -1,7 +1,8 @@
 package com.ipleiria.anaivojoao.mobilitybuttler.data.entity
 
 enum class SayTriggers(val keyWords: Set<String>) {
-    TEMPERATURE(setOf("temperature"));
+    TEMPERATURE(setOf("temperature")),
+    MAIL(setOf("mails", "inbox"));
     companion object {
         fun getAllCommands() = values().flatMap { set -> set.keyWords.map { it } }
     }
