@@ -52,14 +52,14 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
     open fun commandProcessing(command: VoiceCommandEntity) {
         when (command) {
             VoiceCommandEntity.EXIT -> exit()
-            VoiceCommandEntity.NEXT -> println( command.toString())
-            VoiceCommandEntity.BACK -> println( command.toString())
+            //VoiceCommandEntity.NEXT -> println( command.toString())
+            //VoiceCommandEntity.BACK -> println( command.toString())
             VoiceCommandEntity.SAY -> transcribe(command.params)
-            else -> requireContext().toast( command.toString())
+            
         }
     }
     open fun transcribe(params:String? = null ) {
-        println("TRANSCRIBE");
+        
         if(params != null && SayTriggers.TEMPERATURE.isIn(params)){
 			println("Dispatching Temperature")
 
@@ -72,7 +72,7 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
                     //genericLogicResourceDecoder()
 					//requireContext().toast("Temperature: ${m2mResponse?.cin?.containerValue.toString()}")
                     var ret: String = ContentInfoEnum.genericLogicResourceDecoder(m2mResponse?.cin)
-                    println(ret)
+                
                     //find a way to access this
                     MainActivity.TTS.handleIncomingString(context, ret);
 

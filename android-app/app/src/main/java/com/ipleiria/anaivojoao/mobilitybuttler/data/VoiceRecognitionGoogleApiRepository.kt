@@ -55,7 +55,7 @@ class VoiceRecognitionGoogleApiRepository(
                         }
                     }
                     if (isFinal) text?.let {
-                        Log.d(TAG, "text - [${response.getResults(0)}]")
+                        //Log.d(TAG, "text - [${response.getResults(0)}]") TODO...
                         trySend(VoiceCommandEntity.processCommand(text))
                     }
                 }
@@ -67,7 +67,7 @@ class VoiceRecognitionGoogleApiRepository(
             }
 
             override fun onComplete() {
-                Log.d(TAG, "onComplete $_clientStream $_voiceRecorder")
+                //Log.d(TAG, "onComplete $_clientStream $_voiceRecorder") TODO...
             }
         }
 
