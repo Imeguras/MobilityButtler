@@ -23,7 +23,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var tts: TextToSpeech
+    companion object {
+        lateinit var TTS: TextToSpeech
+    }
     private lateinit var butlerGif: ButlerGif
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,15 +60,13 @@ class MainActivity : AppCompatActivity() {
 
         butlerGif = ButlerGif(this)
         butlerGif.butlerStopSpeakGif()
-
-        tts = TextToSpeech(this, butlerGif)
-
+        // Start TextToSpeech TTS
+        TTS = TextToSpeech(this,butlerGif);
         speakOnStartUp(this)
-
     }
 
     private fun speakOnStartUp(context: Context){
-        tts.handleIncomingString(context, "Dear Sir, How are you?")
+        TTS.handleIncomingString(context, "Dear Sir, How are you?")
     }
 
     private fun speak(context: Context, tts: TextToSpeech, phrase: String) {

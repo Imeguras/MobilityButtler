@@ -5,10 +5,21 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.ipleiria.anaivojoao.mobilitybuttler.ApiClient
+import com.ipleiria.anaivojoao.mobilitybuttler.MainActivity
+import com.ipleiria.anaivojoao.mobilitybuttler.TextToSpeech
+import com.ipleiria.anaivojoao.mobilitybuttler.api.Cin
+import com.ipleiria.anaivojoao.mobilitybuttler.api.ContentInfoEnum
+import com.ipleiria.anaivojoao.mobilitybuttler.api.M2MResponse
+import com.ipleiria.anaivojoao.mobilitybuttler.data.entity.SayTriggers
 import kotlinx.coroutines.launch
 import org.koin.core.context.stopKoin
 import com.ipleiria.anaivojoao.mobilitybuttler.data.entity.VoiceCommandEntity
+import com.ipleiria.anaivojoao.mobilitybuttler.data.entity.isIn
 import com.ipleiria.anaivojoao.mobilitybuttler.ui.utils.toast
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
@@ -30,7 +41,7 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.commandState.collect {
-                        println( it.toString())
+                        //println( it.toString())
                         commandProcessing(it)
                     }
                 }
@@ -48,8 +59,36 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
         }
     }
     open fun transcribe(params:String? = null ) {
-        requireContext().toast(params.toString())
+        println("TRANSCRIBE");
+        if(params != null && SayTriggers.TEMPERATURE.isIn(params)){
+			println("Dispatching Temperature")
 
+            var call = ApiClient.apiService.getLatestTemperature();
+			/////Dispatch the get request and return a OpenM2Mresponse
+			call.enqueue(object : Callback<M2MResponse> {
+				override fun onResponse(call: Call<M2MResponse>, response: Response<M2MResponse>) {
+                    println("Response!!")
+                    val m2mResponse = response.body()
+                    //genericLogicResourceDecoder()
+					//requireContext().toast("Temperature: ${m2mResponse?.cin?.containerValue.toString()}")
+                    var ret: String = ContentInfoEnum.genericLogicResourceDecoder(m2mResponse?.cin)
+                    println(ret)
+                    //find a way to access this
+                    MainActivity.TTS.handleIncomingString(context, ret);
+
+                }
+
+                override fun onFailure(call: Call<M2MResponse>, t: Throwable) {
+                    requireContext().toast("Err: "+t.message.toString())
+                }
+
+
+            })
+
+
+
+
+        }
     }
     open fun exit() {
         requireActivity().finishAffinity()
