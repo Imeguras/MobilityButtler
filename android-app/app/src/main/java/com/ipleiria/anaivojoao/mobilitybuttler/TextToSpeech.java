@@ -38,6 +38,7 @@ public class TextToSpeech {
         Locale desiredLocale = Locale.US;
         tts.setLanguage(desiredLocale);
 
+        // TODO
         Set<Voice> voices = tts.getVoices();
         List<Voice> voiceList = new ArrayList<>(voices);
         Voice selectedVoice = voiceList.get(22);
