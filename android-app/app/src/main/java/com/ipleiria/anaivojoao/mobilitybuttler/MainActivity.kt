@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var butlerGif: ButlerGif
     private var webSocketManager: WebSocketManager? = null
 
+    private var location: String? = "kitchen"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startKoin {
@@ -44,11 +46,13 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.toolbar)
 
         binding.appBarMain.kitchen.setOnClickListener { view ->
+            this.location = "kitchen"
             Snackbar.make(view, "Set to kitchen", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
 
         binding.appBarMain.bedroom.setOnClickListener { view ->
+            this.location = "bedroom"
             Snackbar.make(view, "Set to bedroom", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }

@@ -64,26 +64,23 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
         if(params != null && SayTriggers.TEMPERATURE.isIn(params)){
 			println("Dispatching Temperature")
 
-            var call = ApiClient.apiService.getLatestTemperature();
-			/////Dispatch the get request and return a OpenM2Mresponse
+            val call = ApiClient.apiService.getLatestTemperature();
+
+			// Dispatch the get request and return a OpenM2MResponse
 			call.enqueue(object : Callback<M2MResponse> {
 				override fun onResponse(call: Call<M2MResponse>, response: Response<M2MResponse>) {
                     println("Response!!")
-                    val m2mResponse = response.body()
-                    //genericLogicResourceDecoder()
-					//requireContext().toast("Temperature: ${m2mResponse?.cin?.containerValue.toString()}")
-                    var ret: String = ContentInfoEnum.genericLogicResourceDecoder(m2mResponse?.cin)
-                
-                    //find a way to access this
-                    MainActivity.TTS.handleIncomingString(context, ret);
 
+                    val m2mResponse = response.body()
+                    val ret: String = ContentInfoEnum.genericLogicResourceDecoder(m2mResponse?.cin)
+                
+                    //Respond with the temperature
+                    MainActivity.TTS.handleIncomingString(context, ret);
                 }
 
                 override fun onFailure(call: Call<M2MResponse>, t: Throwable) {
                     requireContext().toast("Err: "+t.message.toString())
                 }
-
-
             })
 
 
