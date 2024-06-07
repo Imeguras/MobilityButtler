@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var tts: TextToSpeech
     private lateinit var butlerGif: ButlerGif
+    private var webSocketManager: WebSocketManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +64,8 @@ class MainActivity : AppCompatActivity() {
 
         speakOnStartUp(this)
 
+        webSocketManager = WebSocketManager()
+        webSocketManager!!.start()
     }
 
     private fun speakOnStartUp(context: Context){
@@ -83,5 +86,12 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (webSocketManager != null) {
+            webSocketManager!!.stop()
+        }
     }
 }

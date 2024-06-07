@@ -163,7 +163,7 @@ class WebSocketServer:
             await asyncio.wait([client.send(json.dumps(message)) for client in self.clients])
 
     async def start(self):
-        self.server = await websockets.serve(self.handle_connection, "localhost", self.port)
+        self.server = await websockets.serve(self.handle_connection, "0.0.0.0", self.port)
         print(f"WebSocket server started on port {self.port}")
         await self.server.wait_closed()
 
