@@ -42,7 +42,7 @@ class VoiceRecognitionGoogleApiRepository(
             }
 
             override fun onResponse(response: StreamingRecognizeResponse?) {
-                Log.d(TAG, "ResponseObserver.onResponse($response)")
+                //Log.d(TAG, "ResponseObserver.onResponse($response)")
                 response?.let {
                     var text: String? = null
                     var isFinal = false
