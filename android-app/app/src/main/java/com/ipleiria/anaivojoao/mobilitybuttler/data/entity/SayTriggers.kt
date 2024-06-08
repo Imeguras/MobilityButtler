@@ -3,8 +3,8 @@ package com.ipleiria.anaivojoao.mobilitybuttler.data.entity
 enum class SayTriggers(val keyWords: Set<String>) {
     TEMPERATURE(setOf("temperature")),
     MAIL(setOf("mails", "inbox", "mailbox")),
-    KITCHEN(setOf("kitchen", "bedroom", "room")),
-    BEDROOM(setOf("bedroom", "room"));
+    KITCHEN(setOf("kitchen", "kit", "chen")),
+    BEDROOM(setOf("bedroom", "room", "bed"));
     companion object {
         fun getAllCommands() = values().flatMap { set -> set.keyWords.map { it } }
     }
