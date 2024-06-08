@@ -3,25 +3,17 @@ package com.ipleiria.anaivojoao.mobilitybuttler.ui.home
 import android.Manifest.permission.RECORD_AUDIO
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.bumptech.glide.Glide
 import com.ipleiria.anaivojoao.mobilitybuttler.R
 import com.ipleiria.anaivojoao.mobilitybuttler.data.entity.VoiceCommandEntity
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.ipleiria.anaivojoao.mobilitybuttler.databinding.FragmentHomeBinding
 import com.ipleiria.anaivojoao.mobilitybuttler.ui.base.VoiceManagedFragment
 import com.ipleiria.anaivojoao.mobilitybuttler.ui.utils.checkAndRequestPermissions
-import java.io.IOException
-
 import com.ipleiria.anaivojoao.mobilitybuttler.ui.utils.viewBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HomeFragment : VoiceManagedFragment<HomeViewModel>(R.layout.fragment_home) {

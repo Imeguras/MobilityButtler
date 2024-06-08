@@ -4,10 +4,6 @@ import android.content.Context;
 import android.speech.tts.UtteranceProgressListener;
 import android.speech.tts.Voice;
 
-import com.ipleiria.anaivojoao.mobilitybuttler.ui.home.HomeFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -74,7 +70,6 @@ public class TextToSpeech {
 
             @Override
             public void onError(String utteranceId) {
-                // Handle error if needed
             }
         });
 
