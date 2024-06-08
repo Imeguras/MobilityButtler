@@ -23,7 +23,6 @@ public class WebSocketManager {
     protected Context context;
     private WebSocket webSocket;
 
-
     public WebSocketManager(Context context)
     {
         this.context = context;
@@ -44,7 +43,7 @@ public class WebSocketManager {
 
     private static final class EchoWebSocketListener extends WebSocketListener {
         private static final int NORMAL_CLOSURE_STATUS = 1000;
-        protected Context context;
+        private final Context context;
 
         private boolean saidMessage;
 

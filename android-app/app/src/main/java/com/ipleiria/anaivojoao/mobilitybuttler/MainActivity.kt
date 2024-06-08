@@ -27,26 +27,19 @@ class MainActivity : AppCompatActivity() {
     companion object {
         lateinit var TTS: TextToSpeech
         lateinit var ButlerGif: ButlerGif
+
         var location: String? = "kitchen"
         var lastSaidWord: String? = "kitchen"
-
 
         fun updateButlerPresence(){
             if (location == lastSaidWord){
                 // Appear in the UI
                 ButlerGif.butlerStopSpeakGif()
-
-                // Allow to speak
-
-
             }
             else
             {
                 // Disappear from the UI
                 ButlerGif.butlerDisappear()
-
-                // Do not allow to speak
-
             }
         }
     }
@@ -67,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.appBarMain.toolbar)
 
+        // Buttons kitchen and bedroom
         binding.appBarMain.kitchen.setOnClickListener { view ->
             location = "kitchen"
             updateButlerPresence()
@@ -81,24 +75,15 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
 
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
-
+        // Initialize ButlerGif
         ButlerGif = ButlerGif(this)
         ButlerGif.butlerStopSpeakGif()
 
         // Start TextToSpeech TTS
-        TTS = TextToSpeech(this,ButlerGif);
+        TTS = TextToSpeech();
         speakOnStartUp(this)
 
+        // Initialize websockets
         webSocketManager = WebSocketManager(this)
         webSocketManager!!.start()
     }
@@ -108,7 +93,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }

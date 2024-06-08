@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Virtual Butler</string>
+    <string name="app_name">Smart Butler</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Virtual Butler</string>
+    <string name="nav_header_title">Smart Butler</string>
     <string name="nav_header_subtitle">At your service</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -11,5 +11,5 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="teste">PROCURAME\n</string>
-    <string name="ButlerHomeScreen">I\'m your virtual butler, \n Ready for requests</string>
+    <string name="ButlerHomeScreen">I\'m your smart butler, \n Ready for requests</string>
 </resources>

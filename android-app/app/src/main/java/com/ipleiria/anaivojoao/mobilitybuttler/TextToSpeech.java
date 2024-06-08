@@ -4,21 +4,15 @@ import android.content.Context;
 import android.speech.tts.UtteranceProgressListener;
 import android.speech.tts.Voice;
 
-import com.ipleiria.anaivojoao.mobilitybuttler.ui.home.HomeFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 public class TextToSpeech {
     private android.speech.tts.TextToSpeech tts;
     private boolean isTtsInitialized = false;
-//    private ButlerGif butlerGif;
+    private final String desiredVoiceName = "en-gb-x-gbb-network";
 
-    public TextToSpeech(Context context, ButlerGif butlerGif) {
-//        this.butlerGif = butlerGif;
-    }
+    public TextToSpeech() {}
 
     public void handleIncomingString(Context context, String text) {
         if(MainActivity.ButlerGif.getPresent()) {
@@ -37,14 +31,24 @@ public class TextToSpeech {
     }
 
     private void setLanguageAndVoice() {
-        Locale desiredLocale = Locale.US;
+        Locale desiredLocale = Locale.UK;
         tts.setLanguage(desiredLocale);
 
-        // TODO
         Set<Voice> voices = tts.getVoices();
-        List<Voice> voiceList = new ArrayList<>(voices);
-        Voice selectedVoice = voiceList.get(22);
-        tts.setVoice(selectedVoice);
+        Voice selectedVoice = null;
+        for (Voice voice : voices) {
+            if (voice.getName().equals(desiredVoiceName)) {
+                selectedVoice = voice;
+                break;
+            }
+        }
+
+        if (selectedVoice != null) {
+            tts.setVoice(selectedVoice);
+        } else {
+            // Handle the case where no US voice was found
+            System.out.println("The exact US voice was not found.");
+        }
     }
 
 
@@ -66,7 +70,6 @@ public class TextToSpeech {
 
             @Override
             public void onError(String utteranceId) {
-                // Handle error if needed
             }
         });
 
