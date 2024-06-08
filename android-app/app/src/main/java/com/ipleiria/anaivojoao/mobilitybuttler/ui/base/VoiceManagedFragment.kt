@@ -54,7 +54,7 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
     open fun commandProcessing(command: VoiceCommandEntity) {
         when (command) {
             VoiceCommandEntity.EXIT -> exit()
-            VoiceCommandEntity.NEXT -> moveEntity(command.params)
+            VoiceCommandEntity.MOVE -> moveEntity(command.params)
             VoiceCommandEntity.REMEMBER -> remember(command.params)
             VoiceCommandEntity.SAY -> transcribe(command.params)
             else -> println("")
