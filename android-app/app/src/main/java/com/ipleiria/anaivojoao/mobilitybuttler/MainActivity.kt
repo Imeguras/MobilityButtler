@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         ButlerGif.butlerStopSpeakGif()
 
         // Start TextToSpeech TTS
-        TTS = TextToSpeech(this,ButlerGif);
+        TTS = TextToSpeech();
         speakOnStartUp(this)
 
         webSocketManager = WebSocketManager(this)
