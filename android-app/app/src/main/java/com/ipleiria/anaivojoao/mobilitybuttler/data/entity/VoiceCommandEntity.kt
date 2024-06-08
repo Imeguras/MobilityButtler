@@ -3,9 +3,11 @@ package com.ipleiria.anaivojoao.mobilitybuttler.data.entity
 
 enum class VoiceCommandEntity(val keyWords: Set<String>, var params: String? = null) {
     EXIT(setOf("exit", "terminate")),
-    SAY(setOf("say", "tell", "whats", "move", "set", "to")),
-    NEXT(setOf("next", "go")),
+    SAY(setOf("say", "tell", "whats")),
+
+    NEXT(setOf("go", "move")),
     BACK(setOf("back", "previous")),
+    REMEMBER(setOf("remind", "forget")),
     /*START(setOf("start", "begin")),
     STOP(setOf("stop", "finish", "end", "cancel")),
 

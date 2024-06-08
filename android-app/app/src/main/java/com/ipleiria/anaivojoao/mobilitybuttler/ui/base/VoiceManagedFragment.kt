@@ -54,37 +54,65 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
     open fun commandProcessing(command: VoiceCommandEntity) {
         when (command) {
             VoiceCommandEntity.EXIT -> exit()
-            //VoiceCommandEntity.NEXT -> println( command.toString())
-            //VoiceCommandEntity.BACK -> println( command.toString())
+            VoiceCommandEntity.NEXT -> moveEntity(command.params)
+            VoiceCommandEntity.REMEMBER -> remember(command.params)
             VoiceCommandEntity.SAY -> transcribe(command.params)
             else -> println("")
             
         }
     }
+    open fun remember(params:String?=null){
+        if(params != null) {
+           var res: M2MResponse=  M2MResponse(
+                Cin(
+                    "{\"message\":\"" + params + "\"}",
+                    ContentInfoEnum.JSON.cnf+":0"
+                )
+            )
+
+            //call the api to post
+            val call = ApiClient.apiService.postRememberList(res);
+            call.enqueue(object : Callback<M2MResponse> {
+                override fun onResponse(call: Call<M2MResponse>, response: Response<M2MResponse>) {
+                    requireContext().toast("Success: " + response.body().toString())
+                    MainActivity.TTS.handleIncomingString(context, "Ok, im gonna keep, " + params + " in mind");
+                }
+
+                override fun onFailure(call: Call<M2MResponse>, t: Throwable) {
+                    requireContext().toast("Err: " + t.message.toString())
+                    MainActivity.TTS.handleIncomingString(context, "Welp, the network isn't helping me try again later...");
+                }
+            })
+
+        }else{
+            MainActivity.TTS.handleIncomingString(context, "I couldn't quite understand what you wanted me to remember");
+        }
+
+    }
     open fun transcribe(params:String? = null ) {
-        
-        if(params != null && SayTriggers.TEMPERATURE.isIn(params)){
-			println("Dispatching Temperature")
+
+        if (params != null && SayTriggers.TEMPERATURE.isIn(params)) {
+            println("Dispatching Temperature")
 
             val call = ApiClient.apiService.getLatestTemperature();
 
-			// Dispatch the get request for temperature and return a OpenM2MResponse
-			call.enqueue(object : Callback<M2MResponse> {
-				override fun onResponse(call: Call<M2MResponse>, response: Response<M2MResponse>) {
+            // Dispatch the get request for temperature and return a OpenM2MResponse
+            call.enqueue(object : Callback<M2MResponse> {
+                override fun onResponse(call: Call<M2MResponse>, response: Response<M2MResponse>) {
                     println("Temperature Response")
 
                     val m2mResponse = response.body()
                     val ret: String = ContentInfoEnum.genericLogicResourceDecoder(m2mResponse?.cin)
-                
+
                     // Respond with the temperature
                     MainActivity.TTS.handleIncomingString(context, ret);
                 }
 
                 override fun onFailure(call: Call<M2MResponse>, t: Throwable) {
-                    requireContext().toast("Err: "+t.message.toString())
+                    requireContext().toast("Err: " + t.message.toString())
                 }
             })
-        }else if(params != null && SayTriggers.MAIL.isIn(params)){
+        } else if (params != null && SayTriggers.MAIL.isIn(params)) {
             println("Dispatching Mail")
 
             val call = ApiClient.apiService.checkMail();
@@ -96,7 +124,7 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
 
                     val m2mResponse = response.body()
                     var ret: String = ContentInfoEnum.genericLogicResourceDecoder(m2mResponse?.cin)
-                    ret = when (ret.trim().lowercase()){
+                    ret = when (ret.trim().lowercase()) {
                         "true" -> "You have new mail in the mailbox"
                         "false" -> "No mails in the mailbox"
                         else -> "The Mailbox seems unresponsive"
@@ -108,13 +136,17 @@ abstract class VoiceManagedFragment<T : VoiceManagedViewModel>(
                 }
 
                 override fun onFailure(call: Call<M2MResponse>, t: Throwable) {
-                    requireContext().toast("Err: "+t.message.toString())
+                    requireContext().toast("Err: " + t.message.toString())
                 }
             })
-        } else if(params != null && SayTriggers.KITCHEN.isIn(params)) {
-            MainActivity.lastSaidWord = "kitchen"
-            MainActivity.updateButlerPresence()
-        } else if(params != null && SayTriggers.BEDROOM.isIn(params)) {
+        }
+    }
+    open fun moveEntity(params:String? = null){
+
+        if (params != null && SayTriggers.KITCHEN.isIn(params)) {
+                MainActivity.lastSaidWord = "kitchen"
+                MainActivity.updateButlerPresence()
+        } else if (params != null && SayTriggers.BEDROOM.isIn(params)) {
             MainActivity.lastSaidWord = "bedroom"
             MainActivity.updateButlerPresence()
         }
