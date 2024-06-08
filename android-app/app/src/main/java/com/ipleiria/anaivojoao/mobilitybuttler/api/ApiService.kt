@@ -5,10 +5,12 @@ import com.ipleiria.anaivojoao.mobilitybuttler.data.entity.VoiceCommandEntity
 import com.ipleiria.anaivojoao.mobilitybuttler.data.entity.applyParams
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Path
 import org.json.JSONObject
+import retrofit2.http.POST
 
 
 enum class ContentInfoEnum(val cnf: String){
@@ -58,5 +60,7 @@ interface ApiService {
 	//TODO: this shouldn't be hardcoded and the origin, etc
 	@Headers("X-M2M-Origin: CAdmin", "X-M2M-RI: 123","X-M2M-RVI: 3")
     fun getLatestTemperature(): Call<M2MResponse>
-
+	@POST("butler/remember-list")
+	@Headers("X-M2M-Origin: CAdminButler", "X-M2M-RI: 123","X-M2M-RVI: 3", "Content-Type: application/json;ty=4", "Accept: application/json")
+	fun postRememberList(@Body payload: M2MResponse): Call<M2MResponse>
 }
