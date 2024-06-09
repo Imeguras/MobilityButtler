@@ -2,22 +2,12 @@ package com.ipleiria.anaivojoao.mobilitybuttler.data.entity
 
 
 enum class VoiceCommandEntity(val keyWords: Set<String>, var params: String? = null) {
-    EXIT(setOf("exit", "terminate")),
+    EXIT(setOf("exit")),
     SAY(setOf("say", "tell")),
 
     MOVE(setOf("go", "move")),
     BACK(setOf("back", "previous")),
     REMEMBER(setOf("remember me", "remind me", "don't forget")),
-    /*START(setOf("start", "begin")),
-    STOP(setOf("stop", "finish", "end", "cancel")),
-
-    ALLOW(setOf("ok", "okay", "yes", "sure")),
-    DISALLOW(setOf("no", "not")),
-
-    SETTINGS(setOf("settings", "setup", "configurations")),
-    AUTH(setOf("auth", "singIn", "authorize", "enter", "login")),
-    ABOUT(setOf("describe yourself", "who are you", "what can you do")),
-    HELP(setOf("help", "help me", "help i want somebody")),*/
     BACKGROUND(setOf());
 
     companion object {

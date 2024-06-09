@@ -2,7 +2,7 @@ package com.ipleiria.anaivojoao.mobilitybuttler.data.entity
 
 enum class SayTriggers(val keyWords: Set<String>) {
     TEMPERATURE(setOf("temperature")),
-    MAIL(setOf("mails", "inbox", "mailbox")),
+    MAIL(setOf("inbox", "mailbox")),
     KITCHEN(setOf("kitchen", "kit", "chen")),
     BEDROOM(setOf("bedroom", "room", "bed"));
     companion object {
